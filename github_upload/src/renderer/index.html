@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="信息查询助手 - 高效精准的信息检索工具">
+    <meta name="theme-color" content="#3f8cff">
+    <title>信息查询助手</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', "Segoe UI", "PingFang SC", "Helvetica Neue", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+        }
+        
+        /* 实时监控指示器动画 */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .monitor-indicator {
+            animation: spin 2s linear infinite;
+            font-size: 8px;
+            opacity: 0.7;
+        }
+        
+        /* 启动演示提示模态框样式 */
+        .startup-demo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+        
+        .startup-demo-content {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            max-width: 480px;
+            width: 90%;
+            padding: 32px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .startup-demo-header {
+            margin-bottom: 24px;
+        }
+        
+        .startup-demo-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+        }
+        
+        .startup-demo-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 8px 0;
+        }
+        
+        .startup-demo-subtitle {
+            font-size: 16px;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .startup-demo-preview {
+            margin-bottom: 32px;
+        }
+        
+        .demo-preview-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            text-align: left;
+        }
+        
+        .preview-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+        
+        .preview-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0c4a6e;
+            margin: 0 0 12px 0;
+        }
+        
+        .preview-content p {
+            font-size: 14px;
+            color: #334155;
+            margin: 0 0 4px 0;
+            line-height: 1.4;
+        }
+        
+        .startup-demo-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .startup-secondary-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .startup-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .startup-action-btn .btn-icon {
+            font-size: 18px;
+        }
+        
+        .watch-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: 2px solid transparent;
+        }
+        
+        .watch-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        .close-btn {
+            background: #e2e8f0;
+            color: #000000 !important;
+            border: 3px solid #94a3b8;
+            flex: 1;
+            min-width: 0;
+            font-weight: 700;
+        }
+        
+        .close-btn:hover {
+            background: #cbd5e1;
+            border-color: #64748b;
+            color: #000000 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .never-btn {
+            background: #fecaca;
+            color: #000000 !important;
+            border: 3px solid #f87171;
+            flex: 1;
+            min-width: 0;
+            font-weight: 700;
+        }
+        
+        .never-btn:hover {
+            background: #fca5a5;
+            border-color: #ef4444;
+            color: #000000 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+        
+        .startup-secondary-actions .startup-action-btn {
+            font-size: 14px;
+            padding: 12px 16px;
+        }
+        
+        .startup-demo-footer {
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        /* 演示内容区域全高度样式 */
+        .demo-content-area.full-height {
+            height: calc(100% - 80px) !important;
+            margin-top: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 标题栏 -->
+        <header class="app-header">
+            <h1>信息查询助手</h1>
+            <div class="window-controls">
+                <button id="settingsBtn" class="settings-button" title="设置">
+                    <span class="settings-icon">⚙️</span>
+                </button>
+                <div class="window-control minimize" title="最小化"></div>
+                <div class="window-control maximize" title="最大化"></div>
+                <div class="window-control close" title="关闭"></div>
+            </div>
+        </header>
+        
+        <!-- 主要内容区 -->
+        <main class="app-main">
+            <!-- 左侧输入区域 -->
+            <section class="input-section">
+                <div class="input-section-inner">
+                    <!-- 查询模式切换标签 -->
+                    <div class="query-mode-tabs">
+                        <div class="tab-item active" data-tab="standard-query">快速查询</div>
+                        <div class="tab-item" data-tab="advanced-query">普通查询</div>
+                        <div class="tab-item" data-tab="toolkit-query">工具箱</div>
+                    </div>
+                    
+                    <!-- 标准查询模式 -->
+                    <div class="query-panel active" id="standard-query-panel">
+                        <div class="usage-tips">
+                            <h3>使用说明</h3>
+                            <p>请按以下格式粘贴查询资料：</p>
+                            <ul>
+                                <li>第1行：名字</li>
+                                <li>第2行：姓氏</li>
+                                <li>第3行：出生日期（选填，推荐格式：YYYYMM，如202401）</li>
+                                <li>第4行：邮编</li>
+                                <li>第5行：州名</li>
+                                <li>第6行及以后：地址</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="input-wrapper">
+                            <textarea id="paste-area" placeholder="请按格式粘贴查询资料，例如：
+Richard
+Cherry
+199001
+48114
+MI
+4983 Walker Dr
+230 S Hacker Rd
+..."></textarea>
+                        </div>
+                        
+                        <div class="action-area">
+                            <div class="button-group">
+                                <button id="clearDataBtn" class="action-button clear-button">
+                                    <span class="clear-icon">🔄</span>
+                                    清空数据
+                                </button>
+                                <button id="quickSearch" class="action-button">开始查询</button>
+                            </div>
+                            
+                            <div class="search-progress">
+                                <div class="progress-bar" id="progressBar"></div>
+                            </div>
+                            <div id="searchStatus" class="status-message"></div>
+                        </div>
+                        
+                        <div class="preview-area preview-area-visible">
+                            <h3>导入资料预览</h3>
+                            <div class="preview-row preview-row-name">
+                                <span class="preview-label">姓名:</span>
+                                <span id="preview-name" class="preview-value">未识别</span>
+                            </div>
+                            <div class="preview-row preview-row-dob">
+                                <span class="preview-label">出生日期:</span>
+                                <span id="preview-dob" class="preview-value">未识别</span>
+                                <span id="date-format-info" class="date-format-tooltip" title="点击查看日期格式自动检测信息">ℹ️</span>
+                            </div>
+                            <!-- 日期格式帮助信息弹窗 -->
+                            <div id="date-format-helper" class="date-format-helper" style="display:none;">
+                                <div class="helper-header">
+                                    <h4>日期格式自动检测</h4>
+                                    <span class="close-helper">×</span>
+                                </div>
+                                <div class="helper-content">
+                                    <p>系统支持自动检测以下日期格式:</p>
+                                    <ul>
+                                        <li>MM/DD/YYYY (例如: 01/15/1990)</li>
+                                        <li>MM/YYYY 或 YYYY/MM (例如: 01/1990 或 1990/01)</li>
+                                        <li>YYYY-MM 或 MM-YYYY (例如: 1990-01 或 01-1990)</li>
+                                        <li>YYYYMMDD (例如: 19900115)</li>
+                                        <li>YYYYMM 或 MMYYYY (例如: 199001 或 011990)</li>
+                                        <li>YYYY (例如: 1990，将默认月份为01)</li>
+                                        <li>MM (例如: 01，将使用当前年份)</li>
+                                    </ul>
+                                    <div id="current-date-analysis"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 普通查询模式 -->
+                    <div class="query-panel" id="advanced-query-panel">
+                        <div class="usage-tips">
+                            <h3>普通查询说明</h3>
+                            <p>可填写任意字段，填写什么查询什么。有填写地址时将按照快速查询逻辑过滤结果。</p>
+                        </div>
+                        
+                        <div class="advanced-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adv-firstName">FirstName</label>
+                                    <input type="text" id="adv-firstName" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adv-lastName">LastName</label>
+                                    <input type="text" id="adv-lastName" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adv-dob">DOB</label>
+                                    <input type="text" id="adv-dob" class="form-control" placeholder="YYYYMMDD">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adv-ssn">SSN</label>
+                                    <input type="text" id="adv-ssn" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="adv-address">Address</label>
+                                    <input type="text" id="adv-address" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adv-city">City</label>
+                                    <input type="text" id="adv-city" class="form-control">
+                                </div>
+                                <div class="form-group state-width">
+                                    <label for="adv-state">State</label>
+                                    <input type="text" id="adv-state" class="form-control">
+                                </div>
+                                <div class="form-group zip-width">
+                                    <label for="adv-zip">ZIP</label>
+                                    <input type="text" id="adv-zip" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adv-phone">Phone</label>
+                                    <input type="text" id="adv-phone" class="form-control" placeholder="1234567890">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adv-email">Email</label>
+                                    <input type="text" id="adv-email" class="form-control" placeholder="example@email.com">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-area">
+                            <div class="button-group">
+                                <button id="clearAdvancedFormBtn" class="action-button clear-button">
+                                    <span class="clear-icon">🔄</span>
+                                    清空表单
+                                </button>
+                                <button id="advancedSearch" class="action-button">开始查询</button>
+                            </div>
+                            
+                            <div class="search-progress">
+                                <div class="progress-bar" id="advancedProgressBar"></div>
+                            </div>
+                            <div id="advancedSearchStatus" class="status-message"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 工具箱模式 -->
+                    <div class="query-panel" id="toolkit-query-panel">
+                        <div class="toolkit-container">
+                            <div class="usage-tips">
+                                <h3>📚 提取个人信息工具</h3>
+                                <p>生成可拖拽到其他浏览器的书签工具，用于提取网页中的个人信息。</p>
+                            </div>
+                            
+                            <!-- 视频演示区域 -->
+                            <div class="video-demo-section">
+                                <div class="demo-hero">
+                                    <div class="demo-hero-content">
+                                        <div class="demo-hero-icon">🎬</div>
+                                        <h4 class="demo-hero-title">完整安装视频演示</h4>
+                                        <p class="demo-hero-desc">观看真实浏览器操作演示，学会书签工具的完整安装流程</p>
+                                        
+                                        <button class="premium-demo-btn" id="showDragDemo">
+                                            <div class="btn-content">
+                                                <span class="btn-icon">▶️</span>
+                                                <span class="btn-text">播放演示视频</span>
+                                            </div>
+                                            <div class="btn-shine"></div>
+                                        </button>
+                                        
+
+                                    </div>
+                                </div>
+                                
+                                <div class="quick-tips">
+                                    <div class="tip-icon">💡</div>
+                                    <div class="tip-text">
+                                        <span class="tip-title">快速提示：</span>
+                                        观看演示后，将下方绿色按钮拖拽到浏览器书签栏即可使用
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="toolkit-methods">
+                                <!-- 方法1：智能拖拽 -->
+                                <div class="method-card">
+                                    <h4>方法1：智能拖拽（推荐）</h4>
+                                    <div class="method-steps">
+                                        <p id="dynamicInstruction">1. 点击上方"一键准备书签栏"按钮</p>
+                                        <p>2. 将下面的绿色按钮拖拽到书签栏</p>
+                                    </div>
+                                    
+                                    <div class="bookmark-container" id="smartBookmarkContainer">
+                                        <div id="bookmarkContainer" class="bookmark-link-container">
+                                            正在生成书签链接...
+                                        </div>
+                                        <div class="drag-helper" id="dragHelper" style="display:none;">
+                                            <div class="helper-arrow">↑</div>
+                                            <div class="helper-text">拖拽到这里！</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="method-tips">
+                                        <strong>💡 拖拽提示：</strong>
+                                        <br>• <span id="browserSpecificTip">拖拽时会自动显示书签栏</span>
+                                        <br>• 看到"+"号表示可以放置
+                                        <br>• 松开鼠标完成安装
+                                    </div>
+                                </div>
+                                
+                                <!-- 方法2：复制代码 -->
+                                <div class="method-card">
+                                    <h4>方法2：手动复制代码</h4>
+                                    <div class="method-steps">
+                                        <p>1. 按 Ctrl + D 打开添加书签对话框</p>
+                                        <p>2. 名称：提取个人信息工具</p>
+                                        <p>3. 网址：复制下面的完整代码</p>
+                                    </div>
+                                    
+                                    <div class="code-container">
+                                        <div class="code-box" id="jsCodeDisplay">
+                                            正在生成JavaScript代码...
+                                        </div>
+                                        <button class="action-button" id="copyCodeBtn">
+                                            <span class="copy-icon">📋</span>
+                                            复制代码
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 使用说明 -->
+                                <div class="method-card usage-card">
+                                    <h4>✅ 使用说明</h4>
+                                    <div class="usage-list">
+                                        <p>• 成功添加书签后，在任何包含个人信息的网页上点击书签</p>
+                                        <p>• 工具会自动提取姓名、地址、电话、邮箱等信息</p>
+                                        <p>• 支持 Whitepages.com、FastPeopleSearch.com 等网站</p>
+                                        <p>• 支持单个复制和全部复制功能</p>
+                                        <p>• 支持提取性别、年龄、历史地址等详细信息</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-area">
+                </div>
+            </section>
+            
+            <!-- 右侧结果显示区域 -->
+            <section class="results-section">
+                <div class="results-header">
+                    <h2>查询结果</h2>
+                    <div class="system-status" id="systemStatus"></div>
+                    <div class="status-indicator status-success" id="resultStats" style="display:none;">
+                        <span style="color: #3f8cff; font-weight: 600;">当前数据: <span id="totalDataCount" style="color: #2563eb;">获取中...</span></span> | 
+                        <span>并行数: <span id="parallelCount">5</span></span> | 
+                        已找到 <span id="resultCount" style="color: #059669; font-weight: 600;">0</span> 条记录
+                    </div>
+                </div>
+                <div id="searchResults" class="results-container"></div>
+                <!-- 友情提示区域 -->
+                <div class="friendly-tips">
+                    <div class="tips-icon">💡</div>
+                    <div class="tips-content">
+                        <p class="tips-title">友情小提示</p>
+                        <p>输入多个地址可提高查询成功率，确保邮编格式正确可加快搜索速度。支持多种日期格式自动识别。</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- 底部状态栏 -->
+        <footer class="app-footer">
+            <div class="system-info">系统状态: <span id="systemInfo">正常</span></div>
+            <div class="browser-controls">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="headlessToggle" checked>
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-label">无头模式</span>
+                </label>
+                <button id="restartBrowserBtn" class="small-button">重启浏览器</button>
+            </div>
+                            <div class="version-info">版本 10.1.6</div>
+        </footer>
+    </div>
+    
+    <div id="settingsModal" class="settings-modal" style="display:none;">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <span class="settings-modal-title">设置 / Settings</span>
+                <span class="settings-modal-close" id="settingsModalClose">×</span>
+            </div>
+            <form id="settingsForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="setting-url">目标网站URL</label>
+                    <input type="text" id="setting-url" name="url" class="form-control" placeholder="如：http://192.168.100.195:8081/" required>
+                </div>
+                <div class="form-group">
+                    <label for="setting-username">账号</label>
+                    <input type="text" id="setting-username" name="username" class="form-control" placeholder="请输入账号" required>
+                </div>
+                <div class="form-group">
+                    <label for="setting-password">密码</label>
+                    <input type="password" id="setting-password" name="password" class="form-control" placeholder="请输入密码" required>
+                </div>
+                <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px;">
+                    <label for="setting-headless" style="margin-bottom:0;">无头模式</label>
+                    <input type="checkbox" id="setting-headless" name="headless" style="margin-left:8px;">
+                </div>
+                <div class="form-group">
+                    <label for="setting-refresh">自动刷新间隔（分钟）</label>
+                    <input type="number" id="setting-refresh" name="refreshInterval" class="form-control" min="1" max="120" step="1" placeholder="5">
+                </div>
+                <div class="button-group" style="margin-top:10px;">
+                    <button type="submit" class="action-button">保存</button>
+                    <button type="button" class="action-button clear-button" id="settingsCancelBtn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 更新通知组件 -->
+    <!-- 更新状态指示器 -->
+    <div id="updateStatusIndicator" class="update-status-indicator" style="display: none;">
+        <div class="update-indicator-content">
+            <div class="update-indicator-icon">🔄</div>
+            <div class="update-indicator-text">检查更新中...</div>
+        </div>
+    </div>
+    
+    <!-- 更新通知弹窗 -->
+    <div id="updateNotificationModal" class="update-notification-modal" style="display: none;">
+        <div class="update-modal-content">
+            <div class="update-modal-header">
+                <div class="update-header-icon">🚀</div>
+                <div class="update-header-text">
+                    <h3 class="update-title">发现新版本</h3>
+                    <p class="update-subtitle">有新功能和改进等待您体验</p>
+                </div>
+                <button class="update-modal-close" id="updateModalClose">×</button>
+            </div>
+            
+            <div class="update-modal-body">
+                <div class="update-version-info">
+                    <div class="version-comparison">
+                        <div class="version-item current">
+                            <span class="version-label">当前版本</span>
+                            <span class="version-number" id="currentVersionDisplay">10.1.6</span>
+                        </div>
+                        <div class="version-arrow">→</div>
+                        <div class="version-item new">
+                            <span class="version-label">最新版本</span>
+                            <span class="version-number" id="latestVersionDisplay">10.1.7</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="update-details">
+                    <h4>更新内容</h4>
+                    <div class="release-notes" id="releaseNotesContent">
+                        <p>• 新增自动更新功能</p>
+                        <p>• 优化查询性能</p>
+                        <p>• 修复已知问题</p>
+                    </div>
+                </div>
+                
+                <div class="update-download-progress" id="updateProgressContainer" style="display: none;">
+                    <div class="progress-header">
+                        <span class="progress-title">下载更新中</span>
+                        <span class="progress-percentage" id="downloadPercentage">0%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="downloadProgressBar"></div>
+                        </div>
+                    </div>
+                    <div class="progress-details">
+                        <span class="download-speed" id="downloadSpeed">0 KB/s</span>
+                        <span class="download-size" id="downloadSize">0 MB / 0 MB</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="update-modal-footer">
+                <div class="update-actions">
+                    <button class="update-btn secondary" id="updateLaterBtn">稍后提醒</button>
+                    <button class="update-btn primary" id="updateNowBtn">立即更新</button>
+                </div>
+                <div class="update-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="autoUpdateCheckbox">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">自动下载更新</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 更新完成通知 -->
+    <div id="updateCompleteNotification" class="update-complete-notification" style="display: none;">
+        <div class="complete-notification-content">
+            <div class="complete-icon">✅</div>
+            <div class="complete-text">
+                <div class="complete-title">更新已下载完成</div>
+                <div class="complete-message">重启应用即可使用新版本</div>
+            </div>
+            <div class="complete-actions">
+                <button class="complete-btn secondary" id="restartLaterBtn">稍后重启</button>
+                <button class="complete-btn primary" id="restartNowBtn">立即重启</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 更新错误提示 -->
+    <div id="updateErrorNotification" class="update-error-notification" style="display: none;">
+        <div class="error-notification-content">
+            <div class="error-icon">⚠️</div>
+            <div class="error-text">
+                <div class="error-title">更新检查失败</div>
+                <div class="error-message" id="updateErrorMessage">网络连接异常，请稍后重试</div>
+            </div>
+            <div class="error-actions">
+                <button class="error-btn secondary" id="dismissErrorBtn">忽略</button>
+                <button class="error-btn primary" id="retryUpdateBtn">重试</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 更新设置面板 -->
+    <div id="updateSettingsPanel" class="update-settings-panel" style="display: none;">
+        <div class="settings-panel-content">
+            <div class="settings-panel-header">
+                <h3>更新设置</h3>
+                <button class="settings-panel-close" id="updateSettingsClose">×</button>
+            </div>
+            
+            <div class="settings-panel-body">
+                <div class="setting-group">
+                    <label class="setting-label">自动检查更新</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoCheckUpdates" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label">自动下载更新</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoDownloadUpdates">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label">检查间隔</label>
+                    <select id="updateCheckInterval" class="setting-select">
+                        <option value="1">每小时</option>
+                        <option value="6">每6小时</option>
+                        <option value="24" selected>每天</option>
+                        <option value="168">每周</option>
+                    </select>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label">更新渠道</label>
+                    <select id="updateChannel" class="setting-select">
+                        <option value="stable" selected>稳定版</option>
+                        <option value="beta">测试版</option>
+                        <option value="alpha">预览版</option>
+                    </select>
+                </div>
+                
+                <div class="setting-group">
+                    <div class="setting-actions">
+                        <button class="setting-btn secondary" id="clearUpdateCache">清除缓存</button>
+                        <button class="setting-btn primary" id="checkUpdateNow">检查更新</button>
+                    </div>
+                </div>
+                
+                <div class="update-info">
+                    <div class="info-item">
+                        <span class="info-label">当前版本：</span>
+                        <span class="info-value" id="settingsCurrentVersion">10.1.6</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">最后检查：</span>
+                        <span class="info-value" id="lastCheckTime">从未</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="./emergency-reset.js"></script>
+    <script src="./test-no-results-fix.js"></script>
+    <script src="./preview-no-results.js"></script>
+    <script src="./test-fix-verification.js"></script>
+    <script src="./renderer.js"></script>
+</body>
+</html>
