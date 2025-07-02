@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 快速提取人信息工具 10.1.6</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .bookmark-link {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px;
+            border: 2px solid #45a049;
+            transition: all 0.3s;
+            cursor: grab;
+        }
+        .bookmark-link:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .bookmark-link:active {
+            cursor: grabbing;
+        }
+        .instructions {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        .steps {
+            list-style: none;
+            padding: 0;
+        }
+        .steps li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ffeaa7;
+            margin: 15px 0;
+        }
+        .center {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .code-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .copy-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+        .method {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fafafa;
+        }
+        .method h4 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 快速提取人信息工具 10.1.6</h1>
+        
+        <div class="instructions">
+            <h3>🎯 三种添加方式，任选一种：</h3>
+        </div>
+
+        <!-- 方法1：拖拽 -->
+        <div class="method">
+            <h4>方法1：直接拖拽（推荐）</h4>
+            <p>1. 确保书签栏可见（按 Ctrl + Shift + B）</p>
+            <p>2. 将下面的绿色按钮直接拖拽到书签栏</p>
+            <div class="center">
+                <div id="bookmarkContainer">正在加载书签链接...</div>
+            </div>
+            <div class="highlight">
+                <strong>💡 拖拽提示：</strong>
+                <br>• 拖拽时鼠标会显示"+"号
+                <br>• 如果拖拽不成功，试试右键点击选择"添加到书签"
+            </div>
+        </div>
+
+        <!-- 方法2：右键添加 -->
+        <div class="method">
+            <h4>方法2：右键添加</h4>
+            <p>1. 右键点击上面的绿色按钮</p>
+            <p>2. 选择"添加到书签"或"收藏此链接"</p>
+            <p>3. 选择保存位置并确认</p>
+        </div>
+
+        <!-- 方法3：手动添加 -->
+        <div class="method">
+            <h4>方法3：手动复制代码</h4>
+            <p>1. 按 Ctrl + D 打开添加书签对话框</p>
+            <p>2. 名称：提取个人信息工具</p>
+            <p>3. 网址：复制下面的完整代码</p>
+            <div class="code-box" id="jsCode"></div>
+            <button class="copy-btn" onclick="copyToClipboard()">📋 复制代码</button>
+        </div>
+
+        <div class="highlight">
+            <strong>✅ 使用说明：</strong>
+            <br>• 成功添加书签后，在任何包含个人信息的网页上点击书签
+            <br>• 工具会自动提取姓名、地址、电话、邮箱等信息
+            <br>• 新增支持 Whitepages.com 网站数据提取
+            <br>• 支持 FastPeopleSearch.com 网站数据提取
+            <br>• 支持单个复制和全部复制功能
+            <br>• 支持提取性别和年龄信息
+            <br>• 支持分别提取名字、中间名、姓氏
+            <br>• 支持分别提取街道地址、城市、州、邮编
+        </div>
+    </div>
+
+    <script>
+        // JavaScript代码（分段存储避免HTML解析问题）
+        const jsCodeParts = [
+            'javascript:(function(){',
+            'const m={"January":"01","February":"02","March":"03","April":"04","May":"05","June":"06","July":"07","August":"08","September":"09","October":"10","November":"11","December":"12","Jan":"01","Feb":"02","Mar":"03","Apr":"04","May":"05","Jun":"06","Jul":"07","Aug":"08","Sep":"09","Oct":"10","Nov":"11","Dec":"12","1月":"01","2月":"02","3月":"03","4月":"04","5月":"05","6月":"06","7月":"07","8月":"08","9月":"09","10月":"10","11月":"11","12月":"12","1":"01","2":"02","3":"03","4":"04","5":"05","6":"06","7":"07","8":"08","9":"09","10":"10","11":"11","12":"12","01":"01","02":"02","03":"03","04":"04","05":"05","06":"06","07":"07","08":"08","09":"09"};function formatDate(year,month){if(!year||!month)return "";const monthNum=m[month];if(monthNum){return year+"-"+monthNum;}const numericMonth=month.toString().replace(/[^0-9]/g,"");if(numericMonth&&numericMonth>=1&&numericMonth<=12){const paddedMonth=numericMonth.length===1?"0"+numericMonth:numericMonth;return year+"-"+paddedMonth;}return year+"-"+month;}',
+            'function createGrid(data){const grid=document.createElement("div");grid.style.cssText="position:fixed;top:20px;left:50%;transform:translateX(-50%);background:white;padding:12px;border:1px solid #ccc;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);z-index:9999;width:auto;max-width:95%;font-family:Arial,sans-serif;";const header=document.createElement("div");header.style.cssText="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;";const title=document.createElement("div");title.style.cssText="font-weight:bold;font-size:14px;";title.textContent="提取的资料";const closeBtn=document.createElement("button");closeBtn.style.cssText="background:none;border:none;font-size:18px;cursor:pointer;padding:0 5px;";closeBtn.textContent="×";closeBtn.onclick=function(){grid.remove();};header.appendChild(title);header.appendChild(closeBtn);grid.appendChild(header);const contentContainer=document.createElement("div");contentContainer.style.cssText="display:grid;grid-template-columns:repeat(4, 150px);gap:6px;overflow-x:auto;padding-bottom:6px;";const fields=[["名字",data.名字||data.firstName],["中间名",data.中间名||data.middleName],["姓氏",data.姓氏||data.lastName],["性别",data.性别],["年龄",data.年龄],["生日",data.出生日期||data.birthDate],["街道地址",data.街道地址||data.street],["城市",data.城市||data.city],["州",data.州||data.state],["邮编",data.邮编||data.zipCode],["电话",data.电话||data.phone],["邮箱",data.邮箱||data.email],["所有州",data.所有州],["所有邮编",data.所有邮编]];',
+            'fields.forEach(function([label,value]){if(value||label==="中间名"){const cell=document.createElement("div");cell.style.cssText="border:1px solid #e0e0e0;border-radius:4px;overflow:hidden;background:#f8f8f8;";const labelDiv=document.createElement("div");labelDiv.style.cssText="font-size:12px;color:#666;padding:2px 6px;background:#f0f0f0;border-bottom:1px solid #e0e0e0;";labelDiv.textContent=label;const valueContainer=document.createElement("div");valueContainer.style.cssText="padding:4px 6px;display:flex;justify-content:space-between;align-items:center;gap:4px;";const valueDiv=document.createElement("div");valueDiv.style.cssText="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;";valueDiv.textContent=value||"";const copyBtn=document.createElement("button");copyBtn.style.cssText="padding:2px 6px;background:#fff;border:1px solid #ccc;border-radius:3px;cursor:pointer;font-size:11px;white-space:nowrap;";copyBtn.textContent="复制";copyBtn.onclick=function(){navigator.clipboard.writeText(value||"");copyBtn.textContent="已复制";setTimeout(function(){copyBtn.textContent="复制";},1000);};valueContainer.appendChild(valueDiv);valueContainer.appendChild(copyBtn);cell.appendChild(labelDiv);cell.appendChild(valueContainer);contentContainer.appendChild(cell);}});',
+            'if(data.其他姓名 && data.其他姓名.length>0){const aliasCell=document.createElement("div");aliasCell.style.cssText="grid-column:1/-1;border:1px solid #e0e0e0;border-radius:4px;overflow:hidden;background:#f8f8f8;margin-top:6px;";const aliasHeader=document.createElement("div");aliasHeader.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:6px;background:#f0f0f0;cursor:pointer;";const aliasLabel=document.createElement("div");aliasLabel.style.cssText="font-weight:bold;font-size:12px;color:#666;";aliasLabel.textContent="其他姓名";const aliasToggleBtn=document.createElement("button");aliasToggleBtn.style.cssText="background:none;border:none;font-size:12px;color:#666;cursor:pointer;";aliasToggleBtn.textContent="▼";const aliasContent=document.createElement("div");aliasContent.style.cssText="display:none;padding:6px;max-height:300px;overflow-y:auto;";data.其他姓名.forEach(function(alias, index){const aliasDiv=document.createElement("div");aliasDiv.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:6px;border-bottom:1px solid #e0e0e0;";const aliasText=document.createElement("div");aliasText.style.cssText="font-size:13px;flex:1;";aliasText.textContent=alias;const aliasCopyBtn=document.createElement("button");aliasCopyBtn.style.cssText="padding:2px 6px;background:#fff;border:1px solid #ccc;border-radius:3px;cursor:pointer;font-size:11px;white-space:nowrap;margin-left:8px;";aliasCopyBtn.textContent="复制";aliasCopyBtn.onclick=function(e){e.stopPropagation();const aliasParts=alias.trim().split(/\\s+/);let aliasFirstName="";let aliasLastName="";if(aliasParts.length>=2){aliasFirstName=aliasParts[0];aliasLastName=aliasParts[aliasParts.length-1];}else if(aliasParts.length===1){aliasFirstName=aliasParts[0];}const birthDate=data.出生日期||data.birthDate||"";const allZips=data.所有邮编||"";const allStates=data.所有州||"";const historicalAddresses=data.历史地址||[];const streetAddresses=historicalAddresses.map(function(addr){if(addr.includes(",")){return addr.split(",")[0].trim();}else{const parts=addr.split(/\\s+[A-Z]{2}\\s+\\d{5}/);if(parts.length>0){return parts[0].trim();}return addr;}}).filter(Boolean);const parts=[];parts.push(aliasFirstName);parts.push(aliasLastName);parts.push(birthDate);parts.push(allZips);parts.push(allStates);streetAddresses.forEach(function(addr){parts.push(addr);});const formattedData=parts.join("\\n");navigator.clipboard.writeText(formattedData);aliasCopyBtn.textContent="已复制";setTimeout(function(){aliasCopyBtn.textContent="复制";},1000);};aliasDiv.appendChild(aliasText);aliasDiv.appendChild(aliasCopyBtn);aliasContent.appendChild(aliasDiv);});aliasHeader.onclick=function(){aliasContent.style.display=aliasContent.style.display==="none"?"block":"none";aliasToggleBtn.textContent=aliasContent.style.display==="none"?"▼":"▲";};aliasHeader.appendChild(aliasLabel);aliasHeader.appendChild(aliasToggleBtn);aliasCell.appendChild(aliasHeader);aliasCell.appendChild(aliasContent);contentContainer.appendChild(aliasCell);}if(data.历史地址&&data.历史地址.length>0){const historyCell=document.createElement("div");historyCell.style.cssText="grid-column:1/-1;border:1px solid #e0e0e0;border-radius:4px;overflow:hidden;background:#f8f8f8;margin-top:6px;";const historyHeader=document.createElement("div");historyHeader.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:6px;background:#f0f0f0;cursor:pointer;";const historyLabel=document.createElement("div");historyLabel.style.cssText="font-weight:bold;font-size:12px;color:#666;";historyLabel.textContent="历史地址";const toggleBtn=document.createElement("button");toggleBtn.style.cssText="background:none;border:none;font-size:12px;color:#666;cursor:pointer;";toggleBtn.textContent="▼";const historyContent=document.createElement("div");historyContent.style.cssText="display:none;padding:6px;max-height:300px;overflow-y:auto;";data.历史地址.forEach(function(addr,index){let addressParts=addr.match(/([^,]+),\\s*([^,]+),\\s*([A-Z]{2})\\s+(\\d{5})/);if(!addressParts){addressParts=addr.match(/^(.+?)\\s+([A-Za-z][A-Za-z\\s]*?)\\s+([A-Z]{2})\\s+(\\d{5})$/);}if(!addressParts){const parts=addr.trim().split(/\\s+/);if(parts.length>=4){const zip=parts[parts.length-1];const state=parts[parts.length-2];const cityStart=Math.max(0,parts.length-4);const streetEnd=cityStart;const street=parts.slice(0,streetEnd+1).join(" ");const city=parts.slice(streetEnd+1,parts.length-2).join(" ");if(/^\\d{5}$/.test(zip)&&/^[A-Z]{2}$/.test(state)){addressParts=[addr,street,city,state,zip];}}}if(addressParts){const street=addressParts[1];const city=addressParts[2];const state=addressParts[3];const zip=addressParts[4];const addrDiv=document.createElement("div");addrDiv.style.cssText="display:grid;grid-template-columns:repeat(5, 110px);gap:6px;margin-bottom:6px;align-items:start;";const fields=[[\'街道地址\',street],[\'城市\',city],[\'州\',state],[\'邮编\',zip]];fields.forEach(function(field){const label=field[0];const value=field[1];const cell=document.createElement("div");cell.style.cssText="border:1px solid #e0e0e0;border-radius:4px;overflow:hidden;background:white;";const labelDiv=document.createElement("div");labelDiv.style.cssText="font-size:12px;color:#666;padding:2px 6px;background:#f0f0f0;border-bottom:1px solid #e0e0e0;";labelDiv.textContent=label;const valueContainer=document.createElement("div");valueContainer.style.cssText="padding:4px 6px;display:flex;justify-content:space-between;align-items:center;gap:4px;";const valueDiv=document.createElement("div");valueDiv.style.cssText="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;";valueDiv.textContent=value;const copyBtn=document.createElement("button");copyBtn.style.cssText="padding:2px 6px;background:#fff;border:1px solid #ccc;border-radius:3px;cursor:pointer;font-size:11px;white-space:nowrap;";copyBtn.textContent="复制";copyBtn.onclick=function(e){e.stopPropagation();navigator.clipboard.writeText(value);copyBtn.textContent="已复制";setTimeout(function(){copyBtn.textContent="复制";},1000);};valueContainer.appendChild(valueDiv);valueContainer.appendChild(copyBtn);cell.appendChild(labelDiv);cell.appendChild(valueContainer);addrDiv.appendChild(cell);});const copyAllCell=document.createElement("div");copyAllCell.style.cssText="border:1px solid #e0e0e0;border-radius:4px;overflow:hidden;background:white;";const copyAllLabel=document.createElement("div");copyAllLabel.style.cssText="font-size:12px;color:#666;padding:2px 6px;background:#f0f0f0;border-bottom:1px solid #e0e0e0;";copyAllLabel.textContent="完整地址";const copyAllContainer=document.createElement("div");copyAllContainer.style.cssText="padding:4px 6px;display:flex;justify-content:center;align-items:center;";const copyAllBtn=document.createElement("button");copyAllBtn.style.cssText="padding:2px 6px;background:#fff;border:1px solid #ccc;border-radius:3px;cursor:pointer;font-size:11px;";copyAllBtn.textContent="复制完整地址";copyAllBtn.onclick=function(e){e.stopPropagation();navigator.clipboard.writeText(`${street}\\t${city}\\t${state}\\t${zip}`);copyAllBtn.textContent="已复制";setTimeout(function(){copyAllBtn.textContent="复制完整地址";},1000);};copyAllContainer.appendChild(copyAllBtn);copyAllCell.appendChild(copyAllLabel);copyAllCell.appendChild(copyAllContainer);addrDiv.appendChild(copyAllCell);historyContent.appendChild(addrDiv);}});historyHeader.onclick=function(){historyContent.style.display=historyContent.style.display==="none"?"block":"none";toggleBtn.textContent=historyContent.style.display==="none"?"▼":"▲";};historyHeader.appendChild(historyLabel);historyHeader.appendChild(toggleBtn);historyCell.appendChild(historyHeader);historyCell.appendChild(historyContent);contentContainer.appendChild(historyCell);}',
+            'grid.appendChild(contentContainer);const copyAllContainer=document.createElement("div");copyAllContainer.style.cssText="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;";const copyAllBtn=document.createElement("button");copyAllBtn.style.cssText="padding:6px 12px;background:#4CAF50;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px;";copyAllBtn.textContent="复制全部";copyAllBtn.onclick=function(){const firstName=data.名字||data.firstName||"";const middleName=data.中间名||data.middleName||"";const lastName=data.姓氏||data.lastName||"";const age=data.年龄||"";const birthDate=data.出生日期||data.birthDate||"";const streetAddress=data.街道地址||data.street||"";const city=data.城市||data.city||"";const state=data.州||data.state||"";const zipCode=data.邮编||data.zipCode||"";const email=data.邮箱||data.email||"";const phone=data.电话||data.phone||"";const formattedData=[firstName,middleName,lastName,age,birthDate,streetAddress,city,state,zipCode,email,phone];const allData=formattedData.join("\\t");navigator.clipboard.writeText(allData);copyAllBtn.textContent="已复制全部";setTimeout(function(){copyAllBtn.textContent="复制全部";},1000);};',
+            'const copyFormattedBtn=document.createElement("button");',
+            'copyFormattedBtn.style.cssText="padding:6px 12px;background:#2196F3;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px;";',
+            'copyFormattedBtn.textContent="复制查询格式";',
+            'copyFormattedBtn.onclick=function(){',
+'const firstName = data.名字 || data.firstName || "";',
+'const lastName = data.姓氏 || data.lastName || "";',
+'const birthDate = data.出生日期 || data.birthDate || "";',
+'const allZips = data.所有邮编 || "";',
+'const allStates = data.所有州 || "";',
+'const historicalAddresses = data.历史地址 || [];',
+'const streetAddresses = historicalAddresses.map(function(addr) {',
+'if(addr.includes(",")) {',
+'return addr.split(",")[0].trim();',
+'} else {',
+'const parts = addr.split(/\\s+[A-Z]{2}\\s+\\d{5}/);',
+'if(parts.length > 0) {',
+'return parts[0].trim();',
+'}',
+'return addr;',
+'}',
+'}).filter(Boolean);',
+'const parts = [];',
+'if(firstName) parts.push(firstName);',
+'if(lastName) parts.push(lastName);',
+'if(birthDate) parts.push(birthDate);',
+'if(allZips) parts.push(allZips);',
+'if(allStates) parts.push(allStates);',
+'streetAddresses.forEach(function(addr) { if(addr) parts.push(addr); });',
+'const formattedData = parts.join("\\n");',
+'navigator.clipboard.writeText(formattedData);',
+'copyFormattedBtn.textContent="已复制";',
+'setTimeout(function(){copyFormattedBtn.textContent="复制查询格式";},1000);',
+'};',
+            'copyAllContainer.appendChild(copyFormattedBtn);',
+            'copyAllContainer.appendChild(copyAllBtn);',
+            'grid.appendChild(copyAllContainer);document.body.appendChild(grid);}',
+            'function extractAddresses(){return new Promise(function(resolve){const addresses=new Set();const showMoreButtons=document.querySelectorAll(".sc-show-more");let clickCount=0;showMoreButtons.forEach(function(btn){try{const icon=btn.querySelector(".sc-show-more__icon--closed");if(icon&&window.getComputedStyle(icon).display!=="none"){clickCount++;btn.click();}}catch(e){console.error("点击SHOW MORE按钮失败:",e);}});setTimeout(function(){const fullAddressElements=document.querySelectorAll("b.sc-text.sc-text-base.sc-report-link-container__text");fullAddressElements.forEach(function(el){const text=el.textContent.trim();if(text.match(/[A-Z]{2}\\s+\\d{5}/)){addresses.add(text);}});const structuredAddresses=document.querySelectorAll("[itemprop=\\"streetAddress\\"],[itemprop=\\"addressLocality\\"],[itemprop=\\"addressRegion\\"],[itemprop=\\"postalCode\\"]");let currentAddress={};structuredAddresses.forEach(function(el){const type=el.getAttribute("itemprop");const value=el.textContent.trim();if(type==="streetAddress")currentAddress.street=value;else if(type==="addressLocality")currentAddress.city=value;else if(type==="addressRegion")currentAddress.state=value;else if(type==="postalCode"){currentAddress.zip=value;if(currentAddress.street&&currentAddress.city&&currentAddress.state){const fullAddr=`${currentAddress.street}, ${currentAddress.city}, ${currentAddress.state} ${currentAddress.zip}`;addresses.add(fullAddr);currentAddress={};}}});resolve(Array.from(addresses));},clickCount>0?500:0);});}',
+            'function extractDataFromPublicDataCheck(){const data={};try{let firstName="",middleName="",lastName="",age="",streetAddress="",city="",state="",zipCode="",phone="",email="",birthDate="",gender="";const aliases=[];const titleElement=document.querySelector(".sc-text.sc-text-xl.sc-text-font-weight-bold");if(titleElement){const fullName=titleElement.textContent.trim();const nameParts=fullName.split(" ");if(nameParts.length===2){firstName=nameParts[0];lastName=nameParts[1];}else if(nameParts.length===3){firstName=nameParts[0];middleName=nameParts[1];lastName=nameParts[2];}}else{const bodyText=document.body.textContent;const nameMatch=bodyText.match(/([A-Z][a-z]+)(?:\\s+([A-Z][a-z]+))?\\s+([A-Z][a-z]+)(?:\\s+is\\s+\\d+\\s+years\\s+old|\\s+aka:|\\s+Male|\\s+Female|\\s+Age\\s+\\d+)/);if(nameMatch){firstName=nameMatch[1];if(nameMatch[2]&&nameMatch[3]){middleName=nameMatch[2];lastName=nameMatch[3];}else if(nameMatch[3]){lastName=nameMatch[3];}}}const aliasesContainer=document.querySelector(".sc-container__body .sc-collapsable-item-list");if(aliasesContainer){const aliasItems=aliasesContainer.querySelectorAll(".sc-collapsable-item-list__item");aliasItems.forEach(function(item){const nameElement=item.querySelector("b.sc-text.sc-text-base.sc-container-line-item__header-text");if(nameElement){const aliasName=nameElement.textContent.trim();if(aliasName&&!aliases.includes(aliasName)){aliases.push(aliasName);}}});}',
+            'const bodyText=document.body.textContent;const highlightsElement=document.querySelector(".sc-report-summary__highlights");if(highlightsElement){const highlightsText=highlightsElement.textContent;const genderMatch=highlightsText.match(/(Male|Female)/);if(genderMatch){gender=genderMatch[1];}}const ageMatch=bodyText.match(/(\\d+)\\s+years\\s+old/)||bodyText.match(/Age\\s+(\\d+)/);if(ageMatch){age=ageMatch[1];}const addressMatch=bodyText.match(/(\\d+\\s+[^,]+),\\s*([^,]+),\\s*([A-Z]{2})\\s+(\\d{5})/)||bodyText.match(/([^,]+),\\s*([A-Z]{2})\\s+(\\d{5})/);if(addressMatch){if(addressMatch.length>4){streetAddress=addressMatch[1];city=addressMatch[2];state=addressMatch[3];zipCode=addressMatch[4];}else{streetAddress=addressMatch[1];state=addressMatch[2];zipCode=addressMatch[3];}}',
+            'const phoneMatch=bodyText.match(/\\((\\d{3})\\)\\s*(\\d{3})-(\\d{4})/);if(phoneMatch){phone="("+phoneMatch[1]+") "+phoneMatch[2]+"-"+phoneMatch[3];}const emailTextElements=document.querySelectorAll(".sc-container-line-item__header-text");for(let i=0;i<emailTextElements.length;i++){const text=emailTextElements[i].textContent.trim();if(text.includes("@")&&text.includes(".")){const emailMatch=text.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4})/);if(emailMatch){email=emailMatch[1];break;}}}if(!email){const emailMatch=bodyText.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4})/);if(emailMatch){email=emailMatch[1];}}const birthMatch=bodyText.match(/born\\s+in\\s+([A-Za-z\\d月]+)\\s+(\\d{4})/i)||bodyText.match(/Born\\s+([A-Za-z\\d月]+)\\s+(\\d{4})/)||bodyText.match(/(\\d{4})年([\\d月]+)/)||bodyText.match(/(\\d{4})-([\\d月]+)/);if(birthMatch){if(birthMatch[0].includes("年")||birthMatch[0].includes("-")){birthDate=formatDate(birthMatch[1],birthMatch[2]);}else{birthDate=formatDate(birthMatch[2],birthMatch[1]);}}',
+            'const stateZipElements = document.querySelectorAll(\'span[itemprop="addressRegion"], span[itemprop="postalCode"], b.sc-text.sc-text-base.sc-report-link-container__text\');const states = new Set();const zips = new Set();stateZipElements.forEach(element => {const text = element.textContent.trim();if (element.getAttribute(\'itemprop\') === \'addressRegion\') {states.add(text);} else if (element.getAttribute(\'itemprop\') === \'postalCode\') {zips.add(text);} else if (text.includes(\',\')) {const matches = text.match(/,\\s*[A-Z]{2}\\s+(\\d{5})/);if (matches) {const stateMatch = text.match(/,\\s*([A-Z]{2})\\s+\\d{5}/);if (stateMatch) {states.add(stateMatch[1]);}zips.add(matches[1]);}}});if (states.size > 0) {state = Array.from(states)[0];data["所有州"] = Array.from(states).join(" ");}if (zips.size > 0) {zipCode = Array.from(zips)[0];data["所有邮编"] = Array.from(zips).join(" ");}',
+            'if(firstName)data["名字"]=firstName;if(middleName)data["中间名"]=middleName;if(lastName)data["姓氏"]=lastName;if(gender)data["性别"]=gender;if(age)data["年龄"]=age;if(birthDate)data["出生日期"]=birthDate;if(streetAddress)data["街道地址"]=streetAddress;if(city)data["城市"]=city;if(state)data["州"]=state;if(zipCode)data["邮编"]=zipCode;if(phone)data["电话"]=phone;if(email)data["邮箱"]=email;if(aliases.length>0)data["其他姓名"]=aliases;data["历史地址"]=extractAddresses();',
+            'const locationElements=document.querySelectorAll("*");for(let el of locationElements){const text=el.textContent.trim();if(text.match(/^\\d+\\s+[A-Za-z]/)){const nextSibling=el.nextElementSibling;if(nextSibling){const addressParts=nextSibling.textContent.trim().match(/([^,]+),\\s*([A-Z]{2})\\s+(\\d{5})/);if(addressParts){data["街道地址"]=text;data["城市"]=addressParts[1];data["州"]=addressParts[2];data["邮编"]=addressParts[3];break;}}}}const phoneElements=document.querySelectorAll("a[href*=\\"tel:\\"]");if(phoneElements.length>0){data["电话"]=phoneElements[0].textContent.trim();}const emailElements=document.querySelectorAll("a[href*=\\"mailto:\\"]");if(emailElements.length>0){const emailText=emailElements[0].textContent.trim();data["邮箱"]=emailText;}}catch(e){console.error("提取错误:",e);}return data;}',
+            'function extractDataFromOtherSite(){try{const n=document.querySelector("h1.oh1")?.textContent.trim()||"";let t="",s=document.querySelectorAll("div.mt-2");for(const a of s)if(a?.textContent?.includes("years old")){t=a.textContent.trim();break}if(!t){console.warn("未找到包含年龄的文本");return{}}let g="",y="",b="";const r=t.match(/born in ([\\w月]+) (\\d{4})/i)||t.match(/(\\d{4})年([\\d月]+)/)||t.match(/(\\d{4})-([\\d月]+)/);if(r){if(r[0].includes("年")||r[0].includes("-")){y=r[1];b=r[2];}else{y=r[2];b=r[1];}}const states = new Set();const zips = new Set();const aliases = [];const alternateNameElements = document.querySelectorAll(\'[itemprop="alternateName"]\');if(alternateNameElements.length > 0){alternateNameElements.forEach(function(element){const aliasName = element.textContent.trim();if(aliasName && !aliases.includes(aliasName)){aliases.push(aliasName);}});}else{const bodyText = document.body.textContent;if(bodyText.includes("Also Seen As")){const aliasSection = bodyText.substring(bodyText.indexOf("Also Seen As") + 13);const aliasText = aliasSection.substring(0, 500);const aliasMatch = aliasText.match(/([A-Za-z]+(?:\\s+[A-Za-z]+){1,3}(?:\\s*,\\s*[A-Za-z]+(?:\\s+[A-Za-z]+){1,3})*)/);if(aliasMatch){const aliasList = aliasMatch[0].split(",");for(let i=0; i<aliasList.length; i++){const trimmedAlias = aliasList[i].trim();if(trimmedAlias && !aliases.includes(trimmedAlias)){aliases.push(trimmedAlias);}}}}}const stateZipElements = document.querySelectorAll(\'[itemprop="addressRegion"], [itemprop="postalCode"], b.sc-text.sc-text-base.sc-report-link-container__text\');stateZipElements.forEach(function(element){const text = element.textContent.trim();if(element.getAttribute(\'itemprop\') === \'addressRegion\') {states.add(text);} else if(element.getAttribute(\'itemprop\') === \'postalCode\') {zips.add(text);} else if(text.includes(\',\')) {const matches = text.match(/,\\s*[A-Z]{2}\\s+(\\d{5})/);if(matches) {const stateMatch = text.match(/,\\s*([A-Z]{2})\\s+\\d{5}/);if(stateMatch) {states.add(stateMatch[1]);}zips.add(matches[1]);}}});let o = states.size > 0 ? Array.from(states)[0] : "";let i = zips.size > 0 ? Array.from(zips)[0] : "";',
+            'const l=document.querySelector("a.dt-hd.link-to-more.olnk");let d="",c="",p="",u="";if(l){d=l.querySelector("[itemprop=\\"streetAddress\\"]")?.textContent.trim()||"";c=l.querySelector("[itemprop=\\"addressLocality\\"]")?.textContent.trim()||"";if(!o)o=l.querySelector("[itemprop=\\"addressRegion\\"]")?.textContent.trim()||"";if(!i)i=l.querySelector("[itemprop=\\"postalCode\\"]")?.textContent.trim()||"";}p=document.querySelector("[itemprop=\\"telephone\\"]")?.textContent.trim()||"";const f=document.querySelectorAll(".row.pl-sm-2[style*=\\"padding-bottom:6px;\\"] div div");for(const a of f){const v=a?.textContent?.trim();if(v?.includes("@")){const emailMatch=v.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4})/);u=emailMatch?emailMatch[1]:"";break;}}',
+            'let h="",middle="",w="";const nameMatch=t.match(/([A-Za-z]+(?:\\s+[A-Za-z]+)*)\\s+is\\s+\\d+/i);if(nameMatch){const fullName=nameMatch[1].trim();const nameParts=fullName.split(/\\s+/);if(nameParts.length>=3){h=nameParts[0];middle=nameParts[1];w=nameParts.slice(2).join(" ");}else if(nameParts.length===2){h=nameParts[0];w=nameParts[1];}else{h=nameParts[0];}}else if(n){const nameParts=n.split(/\\s+/);if(nameParts.length>=3){h=nameParts[0];middle=nameParts[1];w=nameParts.slice(2).join(" ");}else if(nameParts.length===2){h=nameParts[0];w=nameParts[1];}else{h=nameParts[0];}}',
+            'return{firstName:h,middleName:middle,lastName:w,birthDate:y&&b?formatDate(y,b):"",street:d,city:c,state:states.size > 0 ? Array.from(states)[0] : "",zipCode:zips.size > 0 ? Array.from(zips)[0] : "",phone:p,email:u,所有州:Array.from(states).join(" "),所有邮编:Array.from(zips).join(" "),其他姓名:aliases.length > 0 ? aliases : undefined,历史地址:extractAddresses()};}catch(error){console.error("提取过程中出错:",error);return{};}}',
+            'function extractDataFromWhitepages(){try{const data={};let firstName="",middleName="",lastName="",age="",streetAddress="",city="",state="",zipCode="",phone="",email="",birthDate="";const aliases=[];const historicalAddresses=[];const bigNameElement=document.querySelector("h1[data-qa-selector=\\"big-name-in-header\\"] span, .big-name span");if(bigNameElement){const fullName=bigNameElement.textContent.trim();const nameParts=fullName.split(/\\s+/);if(nameParts.length>=3){firstName=nameParts[0];middleName=nameParts[1];lastName=nameParts.slice(2).join(" ");}else if(nameParts.length===2){firstName=nameParts[0];lastName=nameParts[1];}}else{const breadcrumbElement=document.querySelector(".breadcrumb-item-text");if(breadcrumbElement){const breadcrumbText=breadcrumbElement.textContent.trim();const nameMatch=breadcrumbText.match(/^([A-Za-z]+)\\s+([A-Za-z])\\s+([A-Za-z]+)/);if(nameMatch){firstName=nameMatch[1];middleName=nameMatch[2];lastName=nameMatch[3];}}}const addressElement=document.querySelector("h1[data-qa-selector=\\"big-name-in-header\\"] strong, .big-name strong");if(addressElement){const addressText=addressElement.textContent.trim();const addressMatch=addressText.match(/(.+?),\\s*(.+?),\\s*([A-Z]{2})\\s+(\\d{5})/);if(addressMatch){streetAddress=addressMatch[1];city=addressMatch[2];state=addressMatch[3];zipCode=addressMatch[4];}}const ageElement=document.querySelector(".person-age, .restricted-birthdate");if(ageElement){const ageText=ageElement.textContent.trim();const ageMatch=ageText.match(/(\\d+)\\s+years\\s+old/);if(ageMatch){age=ageMatch[1];}const birthMatch=ageText.match(/\\((\\w{3})\\s+(\\d{1,2}),\\s+(\\d{4})\\)/);if(birthMatch){const monthAbbr=birthMatch[1];const day=birthMatch[2].padStart(2,"0");const year=birthMatch[3];const monthMap={"Jan":"01","Feb":"02","Mar":"03","Apr":"04","May":"05","Jun":"06","Jul":"07","Aug":"08","Sep":"09","Oct":"10","Nov":"11","Dec":"12"};const monthNum=monthMap[monthAbbr]||monthAbbr;birthDate=monthNum+"/"+day+"/"+year;}}const bodyText=document.body.textContent;const addressMatch=bodyText.match(/(\\d+\\s+[^,]+),\\s*([^,]+),\\s*([A-Z]{2})\\s+(\\d{5})/);if(addressMatch&&!streetAddress){streetAddress=addressMatch[1];city=addressMatch[2];state=addressMatch[3];zipCode=addressMatch[4];}const phoneElements=document.querySelectorAll("a[data-qa-selector=\\"phone-number-link\\"], [data-qa-selector=\\"phone-number\\"] a, a[href^=\\"tel:\\"], .contact-info a");phoneElements.forEach(function(phoneEl){const phoneText=phoneEl.textContent.trim();if(phoneText.match(/\\(\\d{3}\\)\\s*\\d{3}-\\d{4}/)){phone=phoneText;return;}});let emailFound=false;const emailContainers=document.querySelectorAll(".outer-email-container, .email-address-container, .contact-info, [data-qa-selector*=\\"email\\"], .email-field, .email");emailContainers.forEach(function(emailContainer){if(!emailFound){const emailText=emailContainer.textContent.trim();const obfElement=emailContainer.querySelector(".obf");if(obfElement){const allText=emailContainer.textContent.replace(/\\s+/g," ").trim();const emailMatch=allText.match(/\\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4})\\b/);if(emailMatch){email=emailMatch[1];emailFound=true;}}else{const emailMatch=emailText.match(/\\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4})\\b/);if(emailMatch){email=emailMatch[1];emailFound=true;}}}});if(!emailFound){const bodyText=document.body.textContent;const emailPattern=/\\b([a-zA-Z0-9._%+-]+)\\s*@\\s*([a-zA-Z0-9.-]+)\\s*\\.\\s*([a-zA-Z]{2,4})\\b/g;let match;while((match=emailPattern.exec(bodyText))!==null){const cleanEmail=match[1]+"@"+match[2]+"."+match[3];if(cleanEmail.length>5&&cleanEmail.length<50&&cleanEmail.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$/)){email=cleanEmail;emailFound=true;break;}}}const aliasElement=document.querySelector("[data-qa-selector=\\"person-aliases-mobile\\"], [data-qa-selector=\\"person-aliases-desktop\\"]");if(aliasElement){const aliasText=aliasElement.textContent.trim();if(aliasText){const aliasMatches=aliasText.split(",");aliasMatches.forEach(function(alias){const trimmedAlias=alias.trim();if(trimmedAlias&&!aliases.includes(trimmedAlias)){aliases.push(trimmedAlias);}});}}const addressSet=new Set();const carouselContainer=document.querySelector(".carousel-container");if(carouselContainer){const addressCards=carouselContainer.querySelectorAll(".address-card");addressCards.forEach(function(card){const displayView=card.querySelector(".display-address-view");if(displayView){const addressLine1=displayView.querySelector(".address-line1");const addressLine2=displayView.querySelector(".address-line2");if(addressLine1&&addressLine2){const street=addressLine1.textContent.trim();const cityStateZip=addressLine2.textContent.trim();if(street&&cityStateZip){const fullAddress=street+", "+cityStateZip;if(fullAddress.match(/\\d+.*[A-Z]{2}\\s+\\d{5}/)&&fullAddress.length>15){addressSet.add(fullAddress);}}}}});}if(addressSet.size===0){const allAddressLinks=document.querySelectorAll("a[href*=\\"/address/\\\"]");allAddressLinks.forEach(function(link){const addressContainer=link.closest(".display-address-view, .address-card");if(addressContainer){const addressLine1=addressContainer.querySelector(".address-line1");const addressLine2=addressContainer.querySelector(".address-line2");if(addressLine1&&addressLine2){const street=addressLine1.textContent.trim();const cityStateZip=addressLine2.textContent.trim();if(street&&cityStateZip){const fullAddress=street+", "+cityStateZip;if(fullAddress.match(/\\d+.*[A-Z]{2}\\s+\\d{5}/)&&fullAddress.length>15){addressSet.add(fullAddress);}}}}});}if(addressSet.size===0){const addressElements=document.querySelectorAll("a[href*=\\"/address/\\\"]");addressElements.forEach(function(element){const addressText=element.textContent.trim();if(addressText.length>20&&addressText.match(/\\d+.*,.*[A-Z]{2}\\s+\\d{5}$/)){addressSet.add(addressText);}});}const finalAddresses=Array.from(addressSet).filter(function(addr){const parts=addr.split(",");return parts.length>=2&&addr.match(/[A-Z]{2}\\s+\\d{5}$/)&&addr.length>15;});const states=new Set();const zips=new Set();if(state){states.add(state);}if(zipCode){zips.add(zipCode);}finalAddresses.forEach(function(addr){const stateMatch=addr.match(/\\b([A-Z]{2})\\s+\\d{5}/);const zipMatch=addr.match(/\\b(\\d{5})\\b/);if(stateMatch){states.add(stateMatch[1]);}if(zipMatch){zips.add(zipMatch[1]);}});if(firstName)data["名字"]=firstName;if(middleName)data["中间名"]=middleName;if(lastName)data["姓氏"]=lastName;if(age)data["年龄"]=age;if(birthDate)data["出生日期"]=birthDate;if(streetAddress)data["街道地址"]=streetAddress;if(city)data["城市"]=city;if(state)data["州"]=state;if(zipCode)data["邮编"]=zipCode;if(phone)data["电话"]=phone;if(email)data["邮箱"]=email;if(aliases.length>0)data["其他姓名"]=aliases;if(finalAddresses.length>0)data["历史地址"]=finalAddresses;if(states.size>0)data["所有州"]=Array.from(states).join(" ");if(zips.size>0)data["所有邮编"]=Array.from(zips).join(" ");return data;}catch(error){console.error("Whitepages提取过程中出错:",error);return{};}}function extractDataFromFastPeopleSearch(){try{const data={};let firstName="",middleName="",lastName="",age="",streetAddress="",city="",state="",zipCode="",phone="",email="",birthDate="";const aliases=[];const historicalAddresses=[];const fullNameElement=document.querySelector(".fullname");if(fullNameElement){const fullNameText=fullNameElement.textContent.trim();const parts=fullNameText.split(/\\s+/);if(parts.length>=3){firstName=parts[0];middleName=parts[1];lastName=parts.slice(2).join(" ");}else if(parts.length===2){firstName=parts[0];lastName=parts[1];}}if(!firstName||!lastName){const h1Element=document.querySelector("h1#details-header");if(h1Element){const nameText=h1Element.textContent.trim();const nameMatch=nameText.match(/^([A-Za-z]+)\\s+([A-Za-z]+)(?:\\s+in)?/);if(nameMatch){firstName=nameMatch[1];lastName=nameMatch[2];}}}const ageElement=document.querySelector("h2#age-header");if(ageElement){const ageMatch=ageElement.textContent.match(/Age\\s+(\\d+)/);if(ageMatch){age=ageMatch[1];}}const bodyText=document.body.textContent;const birthMatch=bodyText.match(/was born in ([A-Za-z]+) of (\\d{4})/i)||bodyText.match(/born in ([A-Za-z]+) (\\d{4})/i);if(birthMatch){birthDate=formatDate(birthMatch[2],birthMatch[1]);}const currentAddressElement=document.querySelector("#current_address_section h3 a");if(currentAddressElement){const addressHtml=currentAddressElement.innerHTML;const addressLines=addressHtml.split("<br>");if(addressLines.length>=2){streetAddress=addressLines[0].trim();const secondLine=addressLines[1].trim();const addressMatch=secondLine.match(/^(.+?)\\s+([A-Z]{2})\\s+(\\d{5})$/);if(addressMatch){city=addressMatch[1].trim();state=addressMatch[2];zipCode=addressMatch[3];}}}const phoneElements=document.querySelectorAll("#phone_number_section dl dt strong a, #phone_number_section dl dt a");if(phoneElements.length>0){phone=phoneElements[0].textContent.trim();}const emailElements=document.querySelectorAll("#email_section .detail-box-email h3");if(emailElements.length>0){email=emailElements[0].textContent.trim();}const akaElements=document.querySelectorAll("#aka-links .detail-box-email h3");akaElements.forEach(function(akaEl){const akaText=akaEl.textContent.trim();if(akaText&&!aliases.includes(akaText)){aliases.push(akaText);}});const prevAddressElements=document.querySelectorAll("#previous-addresses .detail-box-address .address-link a");prevAddressElements.forEach(function(addrEl){const addrHtml=addrEl.innerHTML.trim();if(addrHtml.length>10){const lines=addrHtml.split(/<br\\s*\\/?>/i);if(lines.length>=2){const streetAddress=lines[0].trim();const cityStateZip=lines[1].trim();const match=cityStateZip.match(/^(.+?)\\s+([A-Z]{2})\\s+(\\d{5})$/);if(match){const city=match[1].trim();const state=match[2];const zipCode=match[3];const fullAddress=streetAddress+", "+city+", "+state+" "+zipCode;historicalAddresses.push(fullAddress);}}else{const addrText=addrHtml.replace(/<br\\s*\\/?>/gi," ").replace(/\\s+/g," ").trim();historicalAddresses.push(addrText);}}});const allAddressLinks=document.querySelectorAll("a[href*=\\"/address/\\"]");const states=new Set();const zips=new Set();allAddressLinks.forEach(function(link){const href=link.getAttribute("href");const addrMatch=href.match(/-([a-z]{2})-([0-9]{5})$/);if(addrMatch){const extractedState=addrMatch[1].toUpperCase();const extractedZip=addrMatch[2];states.add(extractedState);zips.add(extractedZip);}});const faqText=document.querySelector(".faqs-container");if(faqText){const faqContent=faqText.textContent;const allZipMatches=faqContent.match(/\\b\\d{5}\\b/g);const allStateMatches=faqContent.match(/\\b[A-Z]{2}\\b/g);if(allZipMatches){allZipMatches.forEach(function(zip){zips.add(zip);});}if(allStateMatches){allStateMatches.forEach(function(st){if(st!=="US"&&st!=="FL"&&st!=="CA"){states.add(st);}});}}if(state){states.add(state);}if(zipCode){zips.add(zipCode);}if(firstName)data["名字"]=firstName;if(middleName)data["中间名"]=middleName;if(lastName)data["姓氏"]=lastName;if(age)data["年龄"]=age;if(birthDate)data["出生日期"]=birthDate;if(streetAddress)data["街道地址"]=streetAddress;if(city)data["城市"]=city;if(state)data["州"]=state;if(zipCode)data["邮编"]=zipCode;if(phone)data["电话"]=phone;if(email)data["邮箱"]=email;if(aliases.length>0)data["其他姓名"]=aliases;if(historicalAddresses.length>0)data["历史地址"]=historicalAddresses;if(states.size>0)data["所有州"]=Array.from(states).join(" ");if(zips.size>0)data["所有邮编"]=Array.from(zips).join(" ");return data;}catch(error){console.error("FastPeopleSearch提取过程中出错:",error);return{};}}',
+            'function extractData(){let data={};if(window.location.hostname.includes("whitepages.com")||document.querySelector(".big-name")||document.querySelector("[data-qa-selector=\\"big-name-in-header\\"]")){data=extractDataFromWhitepages();}else if(window.location.hostname.includes("fastpeoplesearch.com")||document.querySelector("#details-header")||document.querySelector(".detail-box")){data=extractDataFromFastPeopleSearch();}else if(document.querySelector(".sc-text.sc-text-xl.sc-text-font-weight-bold")||document.querySelector(".sc-report-summary__highlights")){data=extractDataFromPublicDataCheck();}else if(document.querySelector("h1.oh1")||document.querySelector("[itemprop=\\"streetAddress\\"]")){data=extractDataFromOtherSite();}return data;}',
+            'const extractedData=extractData();if(Object.keys(extractedData).length>0){if(window.location.hostname.includes("whitepages.com")||window.location.hostname.includes("fastpeoplesearch.com")){createGrid(extractedData);}else{extractAddresses().then(function(addresses){extractedData.历史地址=addresses;createGrid(extractedData);});}}else{alert("未找到数据或页面结构不匹配");}',
+            '})();'
+        ];
+
+        // 合并代码
+        const fullJsCode = jsCodeParts.join('');
+
+        // 页面加载完成后创建书签链接
+        window.addEventListener('DOMContentLoaded', function() {
+            // 创建书签链接
+            const bookmarkLink = document.createElement('a');
+            bookmarkLink.href = fullJsCode;
+            bookmarkLink.className = 'bookmark-link';
+            bookmarkLink.title = '拖拽我到书签栏';
+            bookmarkLink.textContent = '📚 提取个人信息工具';
+            bookmarkLink.draggable = true;
+            
+            // 替换加载提示
+            const container = document.getElementById('bookmarkContainer');
+            container.innerHTML = '';
+            container.appendChild(bookmarkLink);
+
+            // 显示代码
+            document.getElementById('jsCode').textContent = fullJsCode;
+        });
+
+        // 复制代码到剪贴板
+        function copyToClipboard() {
+            const codeText = document.getElementById('jsCode').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                copyBtn.textContent = '✅ 已复制';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 复制代码';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html> 
